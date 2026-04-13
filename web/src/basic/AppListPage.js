@@ -29,9 +29,9 @@ const AppListPage = (props) => {
 
   const extractTags = (applications) => {
     const tagsSet = new Set();
-    applications.forEach(application => {
+    applications.forEach((application) => {
       if (application.tags && Array.isArray(application.tags)) {
-        application.tags.forEach(tag => tagsSet.add(tag));
+        application.tags.forEach((tag) => tagsSet.add(tag));
       }
     });
     return Array.from(tagsSet);
@@ -41,40 +41,59 @@ const AppListPage = (props) => {
     if (props.account === null) {
       return;
     }
-    ApplicationBackend.getApplicationsByOrganization("admin", props.account.owner)
-      .then((res) => {
-        const applications = res.data || [];
-        const sortedApps = sort(applications);
-        setApplications(sortedApps);
-        setAllTags(extractTags(sortedApps));
-      });
+    ApplicationBackend.getApplicationsByOrganization(
+      "admin",
+      props.account.owner
+    ).then((res) => {
+      const applications = res.data || [];
+      const sortedApps = sort(applications);
+      setApplications(sortedApps);
+      setAllTags(extractTags(sortedApps));
+    });
   }, [props.account]);
 
   const handleTagChange = (tag, checked) => {
-    setSelectedTags(prev =>
-      checked
-        ? [...prev, tag]
-        : prev.filter(t => t !== tag)
+    setSelectedTags((prev) =>
+      checked ? [...prev, tag] : prev.filter((t) => t !== tag)
     );
   };
 
   const filterByTags = (applications) => {
-    if (selectedTags.length === 0) {return applications;}
+    if (selectedTags.length === 0) {
+      return applications;
+    }
 
-    return applications.filter(application => {
-      if (!application.tags || !Array.isArray(application.tags)) {return false;}
+    return applications.filter((application) => {
+      if (!application.tags || !Array.isArray(application.tags)) {
+        return false;
+      }
 
-      return selectedTags.every(tag => application.tags.includes(tag));
+      return selectedTags.every((tag) => application.tags.includes(tag));
     });
   };
 
   const generateTagColor = (tag) => {
     const colors = [
-      "#ff4d4f", "#f5222d", "#ff7a45", "#fa541c",
-      "#ffa940", "#fa8c16", "#ffc53d", "#faad14",
-      "#ffec3d", "#fadb14", "#bae637", "#a0d911",
-      "#73d13d", "#52c41a", "#36cfc9", "#13c2c2",
-      "#40a9ff", "#1890ff", "#f759ab", "#eb2f96",
+      "#ff4d4f",
+      "#f5222d",
+      "#ff7a45",
+      "#fa541c",
+      "#ffa940",
+      "#fa8c16",
+      "#ffc53d",
+      "#faad14",
+      "#ffec3d",
+      "#fadb14",
+      "#bae637",
+      "#a0d911",
+      "#73d13d",
+      "#52c41a",
+      "#36cfc9",
+      "#13c2c2",
+      "#40a9ff",
+      "#1890ff",
+      "#f759ab",
+      "#eb2f96",
     ];
     let hash = 5381;
     for (let i = 0; i < tag.length; i++) {
@@ -90,16 +109,18 @@ const AppListPage = (props) => {
 
     const filteredApps = filterByTags(applications);
 
-    return filteredApps.map(application => {
+    return filteredApps.map((application) => {
       let homepageUrl = application.homepageUrl;
       if (homepageUrl === "<custom-url>") {
         homepageUrl = props.account.homepage;
       }
 
-      const tagObjects = application.tags ? application.tags.map(tag => ({
-        name: tag,
-        color: generateTagColor(tag),
-      })) : [];
+      const tagObjects = application.tags
+        ? application.tags.map((tag) => ({
+          name: tag,
+          color: generateTagColor(tag),
+        }))
+        : [];
 
       return {
         link: homepageUrl,
@@ -114,14 +135,28 @@ const AppListPage = (props) => {
 
   const TagFilterArea = () => {
     return (
-      <div style={{marginBottom: "20px", display: "flex", flexWrap: "wrap", gap: "8px"}}>
-        <span style={{marginRight: "8px", fontWeight: "bold"}}>{i18next.t("organization:Tags")}</span>
-        {allTags.map(tag => (
+      <div
+        style={{
+          marginBottom: "20px",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+        }}
+      >
+        <span style={{marginRight: "8px", fontWeight: "bold"}}>
+          {i18next.t("organization:Tags")}
+        </span>
+        {allTags.map((tag) => (
           <Tag.CheckableTag
             key={tag}
             checked={selectedTags.includes(tag)}
             onChange={(checked) => handleTagChange(tag, checked)}
-            style={{backgroundColor: selectedTags.includes(tag) ? generateTagColor(tag) : "white", borderColor: generateTagColor(tag)}}
+            style={{
+              backgroundColor: selectedTags.includes(tag)
+                ? generateTagColor(tag)
+                : "white",
+              borderColor: generateTagColor(tag),
+            }}
           >
             {tag}
           </Tag.CheckableTag>
@@ -130,7 +165,14 @@ const AppListPage = (props) => {
         {selectedTags.length > 0 && (
           <button
             onClick={() => setSelectedTags([])}
-            style={{marginLeft: "10px", padding: "2px 8px", background: "#ffffff", border: "2px solid #ddd", borderRadius: "4px", cursor: "pointer"}}
+            style={{
+              marginLeft: "10px",
+              padding: "2px 8px",
+              background: "#ffffff",
+              border: "2px solid #ddd",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
           >
             {i18next.t("forget:Reset")}
           </button>
@@ -141,8 +183,37 @@ const AppListPage = (props) => {
 
   return (
     <div style={{padding: "20px"}}>
+      <div style={{marginBottom: "20px"}}>
+        <div
+          style={{
+            fontSize: "22px",
+            fontWeight: 600,
+            color: "#1f1f1f",
+            lineHeight: "30px",
+          }}
+        >
+          Ứng dụng
+        </div>
+        <div
+          style={{
+            fontSize: "14px",
+            color: "#595959",
+            marginTop: "6px",
+            lineHeight: "22px",
+          }}
+        >
+          Xem các ứng dụng mà tài khoản của bạn có quyền truy cập
+        </div>
+      </div>
       {allTags.length > 0 && TagFilterArea()}
-      <div style={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <GridCards items={getItems()} />
       </div>
     </div>

@@ -17,16 +17,7 @@ import {Card, Col, Tag} from "antd";
 import * as Setting from "../Setting";
 import {withRouter} from "react-router-dom";
 
-const {Meta} = Card;
-
 class SingleCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      classes: props,
-    };
-  }
-
   wrappedAsSilentSigninLink(link) {
     if (link.startsWith("http")) {
       link += link.includes("?") ? "&silentSignin=1" : "?silentSignin=1";
@@ -34,24 +25,29 @@ class SingleCard extends React.Component {
     return link;
   }
 
-  renderCardMobile(logo, link, title, desc, time, tags, isSingle) {
-    const gridStyle = {
-      width: "100vw",
-      textAlign: "center",
-      cursor: "pointer",
-    };
+  renderCardMobile(logo, link, title, desc, tags) {
     const silentSigninLink = this.wrappedAsSilentSigninLink(link);
 
     return (
-      <Card.Grid style={gridStyle} onClick={() => Setting.goToLinkSoft(this, silentSigninLink)}>
-        <img src={logo} alt="logo" width={"100%"} style={{marginBottom: "20px"}} />
-        <Meta
-          title={title}
-          description={desc}
-          style={{justifyContent: "center"}}
-        />
+      <Card
+        hoverable
+        onClick={() => Setting.goToLinkSoft(this, silentSigninLink)}
+        style={{width: "100%", borderRadius: "8px", marginBottom: "12px"}}
+        styles={{body: {padding: "12px 14px"}}}
+      >
+        <div style={{display: "flex", alignItems: "center", gap: "12px"}}>
+          <img alt="logo" src={logo} style={{width: "34px", height: "34px", objectFit: "contain", flexShrink: 0}} />
+          <div style={{minWidth: 0}}>
+            <div style={{fontSize: "11px", color: "#8a8a8a", textTransform: "uppercase", lineHeight: "16px"}}>
+              {desc || "Application"}
+            </div>
+            <div style={{fontSize: "15px", fontWeight: 600, color: "#1f2d6b", lineHeight: "20px"}}>
+              {title}
+            </div>
+          </div>
+        </div>
         {this.renderTags(tags)}
-      </Card.Grid>
+      </Card>
     );
   }
 
@@ -71,23 +67,28 @@ class SingleCard extends React.Component {
     );
   }
 
-  renderCard(logo, link, title, desc, time, tags, isSingle) {
+  renderCard(logo, link, title, desc) {
     const silentSigninLink = this.wrappedAsSilentSigninLink(link);
 
     return (
-      <Col style={{paddingLeft: "20px", paddingRight: "20px", paddingBottom: "20px", marginBottom: "20px"}} span={6}>
+      <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={6} style={{padding: "8px"}}>
         <Card
           hoverable
-          cover={
-            <img alt="logo" src={logo} style={{width: "100%", height: "200px", padding: "20px", objectFit: "scale-down"}} />
-          }
           onClick={() => Setting.goToLinkSoft(this, silentSigninLink)}
-          style={isSingle ? {width: "320px", height: "100%"} : {width: "100%", height: "100%"}}
+          style={{width: "100%", borderRadius: "8px", border: "1px solid #e6e8ef", height: "100%"}}
+          styles={{body: {padding: "24px", backgroundColor: "#f5f5f5"}}}
         >
-          <Meta title={title} description={desc} />
-          {this.renderTags(tags)}
-          <br />
-          <Meta title={""} description={Setting.getFormattedDateShort(time)} />
+          <div style={{display: "grid", gridTemplateColumns: "1fr 3fr", alignItems: "center", gap: "12px"}}>
+            <img alt="logo" src={logo} style={{width: "100%", height: "auto", aspectRatio: "1/1", objectFit: "contain", flexShrink: 0}} />
+            <div style={{minWidth: 0, display: "flex", flexDirection: "column", gap: "16px"}}>
+              <div style={{fontSize: "16px", color: "#8a8a8a", textTransform: "uppercase", lineHeight: "16px"}}>
+                {desc || "Quản lý"}
+              </div>
+              <div style={{fontSize: "24px", fontWeight: 600, color: "#1f2d6b", lineHeight: "20px"}}>
+                {title}
+              </div>
+            </div>
+          </div>
         </Card>
       </Col>
     );
@@ -95,9 +96,9 @@ class SingleCard extends React.Component {
 
   render() {
     if (Setting.isMobile()) {
-      return this.renderCardMobile(this.props.logo, this.props.link, this.props.title, this.props.desc, this.props.time, this.props.tags, this.props.isSingle);
+      return this.renderCardMobile(this.props.logo, this.props.link, this.props.title, this.props.desc, this.props.tags);
     } else {
-      return this.renderCard(this.props.logo, this.props.link, this.props.title, this.props.desc, this.props.time, this.props.tags, this.props.isSingle);
+      return this.renderCard(this.props.logo, this.props.link, this.props.title, this.props.desc);
     }
   }
 }
