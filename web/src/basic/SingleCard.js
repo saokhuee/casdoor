@@ -31,17 +31,40 @@ class SingleCard extends React.Component {
     return (
       <Card
         hoverable
-        onClick={() => Setting.goToLinkSoft(this, silentSigninLink)}
+        onClick={() => Setting.goToLinkSoftOrJumpSelf(this, silentSigninLink)}
         style={{width: "100%", borderRadius: "8px", marginBottom: "12px"}}
         styles={{body: {padding: "12px 14px"}}}
       >
         <div style={{display: "flex", alignItems: "center", gap: "12px"}}>
-          <img alt="logo" src={logo} style={{width: "34px", height: "34px", objectFit: "contain", flexShrink: 0}} />
+          <img
+            alt="logo"
+            src={logo}
+            style={{
+              width: "34px",
+              height: "34px",
+              objectFit: "contain",
+              flexShrink: 0,
+            }}
+          />
           <div style={{minWidth: 0}}>
-            <div style={{fontSize: "11px", color: "#8a8a8a", textTransform: "uppercase", lineHeight: "16px"}}>
+            <div
+              style={{
+                fontSize: "11px",
+                color: "#8a8a8a",
+                textTransform: "uppercase",
+                lineHeight: "16px",
+              }}
+            >
               {desc || "Application"}
             </div>
-            <div style={{fontSize: "15px", fontWeight: 600, color: "#1f2d6b", lineHeight: "20px"}}>
+            <div
+              style={{
+                fontSize: "15px",
+                fontWeight: 600,
+                color: "#1f2d6b",
+                lineHeight: "20px",
+              }}
+            >
               {title}
             </div>
           </div>
@@ -58,7 +81,7 @@ class SingleCard extends React.Component {
 
     return (
       <div style={{marginTop: "8px"}}>
-        {tags.map(tag => (
+        {tags.map((tag) => (
           <Tag key={tag.name} color={tag.color} style={{marginRight: "4px"}}>
             {tag.name}
           </Tag>
@@ -71,20 +94,63 @@ class SingleCard extends React.Component {
     const silentSigninLink = this.wrappedAsSilentSigninLink(link);
 
     return (
-      <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={6} style={{padding: "8px"}}>
+      <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={6}>
         <Card
           hoverable
-          onClick={() => Setting.goToLinkSoft(this, silentSigninLink)}
-          style={{width: "100%", borderRadius: "8px", border: "1px solid #e6e8ef", height: "100%"}}
-          styles={{body: {padding: "24px", backgroundColor: "#f5f5f5"}}}
+          onClick={() => Setting.goToLinkSoftOrJumpSelf(this, silentSigninLink)}
+          style={{
+            width: "100%",
+            borderRadius: "8px",
+            border: "1px solid #e6e8ef",
+            height: "100%",
+          }}
+          styles={{body: {padding: "16px", backgroundColor: "#f5f5f5"}}}
         >
-          <div style={{display: "grid", gridTemplateColumns: "1fr 3fr", alignItems: "center", gap: "12px"}}>
-            <img alt="logo" src={logo} style={{width: "100%", height: "auto", aspectRatio: "1/1", objectFit: "contain", flexShrink: 0}} />
-            <div style={{minWidth: 0, display: "flex", flexDirection: "column", gap: "16px"}}>
-              <div style={{fontSize: "16px", color: "#8a8a8a", textTransform: "uppercase", lineHeight: "16px"}}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 3fr",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
+            <img
+              alt="logo"
+              src={logo}
+              style={{
+                width: "100%",
+                height: "auto",
+                aspectRatio: "1/1",
+                objectFit: "contain",
+                flexShrink: 0,
+              }}
+            />
+            <div
+              style={{
+                minWidth: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "16px",
+                  color: "#8a8a8a",
+                  textTransform: "uppercase",
+                  lineHeight: "16px",
+                }}
+              >
                 {desc || "Quản lý"}
               </div>
-              <div style={{fontSize: "24px", fontWeight: 600, color: "#1f2d6b", lineHeight: "20px"}}>
+              <div
+                style={{
+                  fontSize: "24px",
+                  fontWeight: 600,
+                  color: "#1f2d6b",
+                  lineHeight: "20px",
+                }}
+              >
                 {title}
               </div>
             </div>
@@ -96,9 +162,20 @@ class SingleCard extends React.Component {
 
   render() {
     if (Setting.isMobile()) {
-      return this.renderCardMobile(this.props.logo, this.props.link, this.props.title, this.props.desc, this.props.tags);
+      return this.renderCardMobile(
+        this.props.logo,
+        this.props.link,
+        this.props.title,
+        this.props.desc,
+        this.props.tags
+      );
     } else {
-      return this.renderCard(this.props.logo, this.props.link, this.props.title, this.props.desc);
+      return this.renderCard(
+        this.props.logo,
+        this.props.link,
+        this.props.title,
+        this.props.desc
+      );
     }
   }
 }
