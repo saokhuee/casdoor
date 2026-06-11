@@ -55,8 +55,8 @@ const GridCards = (props) => {
       ))}
     </div>
   ) : (
-    <div style={{width: "100%", padding: "0 16px"}}>
-      <Row gutter={[0, 0]} style={{justifyContent: "flex-start"}}>
+    <div style={{width: "100%", padding: "0"}}>
+      <Row gutter={[16, 16]} style={{justifyContent: "flex-start"}}>
         {items.map((item) => (
           <SingleCard
             logo={item.logo}
